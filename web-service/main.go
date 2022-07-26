@@ -132,7 +132,7 @@ func updateAlbumByID(c *gin.Context) {
 }
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.ReleaseMode)
 
 	// Creates a gin router
 	router := gin.Default()
