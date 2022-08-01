@@ -17,13 +17,25 @@ few tasks/projects written in Go
 
 # web-service in client side
 
+- create table in CH and add data
+```
+curl 'http://localhost:8080/albums/initdb'
+```
+``` 
+-- SQL command executed in ClickHouse
+DROP TABLE IF EXISTS albums
+CREATE TABLE IF NOT EXISTS albums ( code String, title String, artist String, price Float32 ) engine=Memory
+INSERT 3 rows/albums 
+```
+
+
 - return all items 
 ```
 curl 'http://localhost:8080/albums'
 ```
 - add a new item
 ```
-curl -X POST -d '{"id": "4", "title": "Miracle", "artist": "Celine Dion", "price": 10.99}' 'http://localhost:8080/albums'
+curl -X POST -d '{"code": "4", "title": "Miracle", "artist": "Celine Dion", "price": 10.99}' 'http://localhost:8080/albums'
 ```
 - return a specific item
 ```
@@ -37,3 +49,4 @@ curl -X DELETE 'http://localhost:8080/albums/2'
 ```
 curl -X PUT -d '{"title": "Live in Vegas", "artist": "Elvis", "price": 12.29}' 'http://localhost:8080/albums/3'
 ```
+
