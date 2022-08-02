@@ -212,9 +212,9 @@ func CreateTableAndData() []Album {
 func (c *Clickhouse) selectItem(row Album) ([]Album, error) {
 	var whereClause string
 	if (Album{}) == row {
-		whereClause = `WHERE 1=1`
+		whereClause = `WHERE 1=1 ORDER BY code`
 	} else {
-		whereClause = fmt.Sprintf("WHERE code = '%s'", row.Code)
+		whereClause = fmt.Sprintf("WHERE code = '%s' ORDER BY code", row.Code)
 	}
 
 	rows, err := c.Connection.Query(c.Context, "SELECT code, title, artist, price FROM albums "+whereClause)
