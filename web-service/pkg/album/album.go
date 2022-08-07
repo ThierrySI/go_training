@@ -1,4 +1,4 @@
-package model
+package album
 
 // Album represents data about a record album.
 type Album struct {

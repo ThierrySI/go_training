@@ -1,0 +1,14 @@
+
+clickhouse:
+  host: 127.0.0.1
+  port: 9001
+  username: default
+  password:
+  database: default
+  settings:
+    maxOpenConn : 10
+    maxIdleConn : 5
+
+web-server:
+  host: localhost
+  port: 8080

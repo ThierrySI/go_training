@@ -5,7 +5,7 @@ few tasks/projects written in Go
 
 - start HTTP Server
 ```
-~/ProjectsGO/go_training/web-service > go run .
+~/ProjectsGO/go_training/web-service/cmd > go run .
 
 [GIN] 2022/07/26 - 16:35:36 | 200 |     168.041µs |       127.0.0.1 | GET      "/albums"
 [GIN] 2022/07/26 - 16:35:53 | 201 |     185.583µs |       127.0.0.1 | POST     "/albums"
@@ -54,36 +54,36 @@ curl -X PUT -d '{"title": "Live in Vegas", "artist": "Elvis", "price": 12.29}' '
 
 - How to run
 ```
- ~/ProjectsGO/go_training/web-service > cd model
- ~/ProjectsGO/go_training/web-service/model > go test -v
+ ~/ProjectsGO/go_training/web-service > cd pkg/album
+ ~/ProjectsGO/go_training/web-service/pkg/album > go test -v
 ```
 - Results
 ```
 === RUN   TestCreateTableAndData
-    albumDB_test.go:56: [Log - Number of Album] received:3, wanted:3
+    albumDB_test.go:94: TestCreateTableAndData | LOG | Number of Album | received:3, wanted:3
 --- PASS: TestCreateTableAndData (0.06s)
-=== RUN   TestGetAlbumByCode
-    albumDB_test.go:56: [Log - Number of Album] received:1, wanted:1
---- PASS: TestGetAlbumByCode (0.02s)
-=== RUN   TestGetAlbums
-    albumDB_test.go:56: [Log - Number of Album] received:3, wanted:3
---- PASS: TestGetAlbums (0.01s)
-=== RUN   TestAddNewAlbum
-    albumDB_test.go:56: [Log - Number of Album] received:1, wanted:1
-    albumDB_test.go:56: [Log - Number of Album] received:4, wanted:4
---- PASS: TestAddNewAlbum (0.04s)
+=== RUN   TestSelectAlbum
+    albumDB_test.go:94: TestSelectAlbum | LOG | Number of Album | received:1, wanted:1
+--- PASS: TestSelectAlbum (0.02s)
+=== RUN   TestSelectAlbums
+    albumDB_test.go:94: TestSelectAlbums | LOG | Number of Album | received:3, wanted:3
+--- PASS: TestSelectAlbums (0.03s)
+=== RUN   TestInsertNewAlbum
+    albumDB_test.go:94: TestInsertNewAlbum | LOG | Number of Album | received:1, wanted:1
+    albumDB_test.go:94: TestInsertNewAlbum | LOG | Number of Album | received:4, wanted:4
+--- PASS: TestInsertNewAlbum (0.03s)
 === RUN   TestDeleteAlbum
-    albumDB_test.go:56: [Log - Number of Album] received:1, wanted:1
-    albumDB_test.go:56: [Log - Number of Album] received:3, wanted:3
+    albumDB_test.go:94: TestDeleteAlbum | LOG | Number of Album | received:1, wanted:1
+    albumDB_test.go:94: TestDeleteAlbum | LOG | Number of Album | received:3, wanted:3
 --- PASS: TestDeleteAlbum (0.04s)
 PASS
-ok      web-service/model       0.593s
+ok      go_training/web-service/pkg/album       0.655s
 ```
 
 - How to measure test coverage
 ```
- ~/ProjectsGO/go_training/web-service/model > go test -cover
-PASS
-coverage: 74.3% of statements
-ok      web-service/model       0.356s
+ ~/ProjectsGO/go_training/web-service/pkg/album > go test -cover
+ PASS
+ coverage: 44.6% of statements
+ ok      go_training/web-service/pkg/album       0.610s
 ```

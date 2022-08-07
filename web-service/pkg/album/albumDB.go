@@ -1,44 +1,16 @@
-package model
+package album
 
 import (
-	"context"
 	"fmt"
-	"github.com/ClickHouse/clickhouse-go/v2"
-	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+	"go_training/web-service/pkg/database"
 	"log"
-	"time"
-)
-
-type Conn = driver.Conn
-type Ctx = context.Context
-
-// Clickhouse clickhouse connection and basic info holder
-type Clickhouse struct {
-	Host         string
-	Port         int
-	UserName     string
-	Password     string
-	DatabaseName string
-	Connection   Conn
-	Context      Ctx
-}
-
-const (
-	DBHostname = "127.0.0.1"
-	DBPort     = 9001
-	DBUsername = "default"
-	DBPassword = ""
-	DBDatabase = "default"
 )
 
 func GetAlbums() []Album {
-	db, err := connectCH(DBHostname, DBPort, DBUsername, DBPassword, DBDatabase)
-	if err != nil {
-		return nil
-	}
-	defer db.Connection.Close()
+	albumsReturned, err :=
 
-	albumsReturned, err := db.selectItem(Album{})
+
+				selectI    selectItem(Album{})
 	if err != nil {
 		return nil
 	} else {
@@ -112,58 +84,6 @@ func DeleteAlbum(code string) []Album {
 
 }
 
-// return CH object with connection to local CH
-func connectCH(host string, port int, user string, password string, database string) (*Clickhouse, error) {
-
-	var clusterCH = &Clickhouse{Host: host, Port: port, UserName: user, Password: password, DatabaseName: database}
-	addressCH := fmt.Sprintf("%v:%v", clusterCH.Host, clusterCH.Port)
-
-	cnx, err := clickhouse.Open(
-		&clickhouse.Options{
-			Addr: []string{addressCH},
-			Auth: clickhouse.Auth{
-				Database: clusterCH.DatabaseName,
-				Username: clusterCH.UserName,
-				Password: clusterCH.Password,
-			},
-			// Debug:           true,
-			DialTimeout:     time.Second,
-			MaxOpenConns:    10,
-			MaxIdleConns:    5,
-			ConnMaxLifetime: time.Hour,
-			Compression: &clickhouse.Compression{
-				Method: clickhouse.CompressionLZ4,
-			},
-		})
-	if err != nil {
-		fmt.Printf("[Connect] Error: %v\n", err)
-		return &Clickhouse{}, err
-	}
-
-	ctx := clickhouse.Context(context.Background(),
-		clickhouse.WithSettings(clickhouse.Settings{
-			"max_block_size": 10,
-		}))
-	/*		, clickhouse.WithProgress(func(p *clickhouse.Progress) {
-				fmt.Println("progress: ", p)
-			}), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
-			fmt.Println("profile info: ", p)
-		}))*/
-
-	if err := cnx.Ping(ctx); err != nil {
-		if exception, ok := err.(*clickhouse.Exception); ok {
-			fmt.Printf("Catch exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
-		}
-		return &Clickhouse{}, err
-	}
-
-	clusterCH.Context = ctx
-	clusterCH.Connection = cnx
-
-	return clusterCH, err
-
-}
-
 // for any DDL command execution (Data Definition Language as CREATE, DROP, ALTER, etc ...)
 func (c *Clickhouse) executeDDL(query string) error {
 	return c.Connection.Exec(c.Context, query)
@@ -209,7 +129,7 @@ func CreateTableAndData() []Album {
 }
 
 // select item
-func (c *Clickhouse) selectItem(row Album) ([]Album, error) {
+func (c *database.Clickhouse) selectItem(row Album) ([]Album, error) {
 	var whereClause string
 	if (Album{}) == row {
 		whereClause = `WHERE 1=1 ORDER BY code`
