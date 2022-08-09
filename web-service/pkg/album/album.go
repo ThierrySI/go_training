@@ -8,7 +8,7 @@ type Album struct {
 	Price  float32 `json:"price"`
 }
 
-func SampleAlbums() []Album {
+func sampleAlbums() []Album {
 	// albums slice to seed record Album data.
 	var albums = []Album{
 		{Code: "1", Title: "Abbey Road", Artist: "The Beatles", Price: 56.99},

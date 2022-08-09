@@ -1,6 +1,16 @@
 # go_training
 few tasks/projects written in Go
 
+
+# build the project 
+```
+~/ProjectsGO/go_training/web-service > go mod init go_training/web-service
+~/ProjectsGO/go_training/web-service > go mod tidy
+~/ProjectsGO/go_training/web-service > cd cmd
+~/ProjectsGO/go_training/web-service/cmd > go build
+```
+
+
 # web-service in server side
 
 - start HTTP Server
